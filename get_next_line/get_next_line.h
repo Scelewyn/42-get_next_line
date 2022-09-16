@@ -5,10 +5,8 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <errno.h>
 
 // get_next_line.c
 char	*get_next_line(int fd);

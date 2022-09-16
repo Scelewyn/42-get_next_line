@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
-
-#define BUFFER_SIZE 9999
-
+#include "get_next_line.h"
 #include <fcntl.h> // DEBUG
 
 void	free_data(void *ptr)
