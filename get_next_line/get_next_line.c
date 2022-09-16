@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
 
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 9999
 
 #include <fcntl.h> // DEBUG
 
@@ -104,23 +105,19 @@ char	*read_file(int fd)
 	char	*buf;
 	char	*file_str;
 
-	ft_putstr("Entering read_file");
 	file_str = malloc(BUFFER_SIZE + 1);
+	buf = malloc(BUFFER_SIZE + 1);
 	file_str[0] = '\0';
 	sz = read(fd, buf, BUFFER_SIZE);
 	while (sz > 0)
 	{
 		buf[sz] = '\0';
-		ft_putstr(buf);
 		file_str = ft_strjoin(file_str, buf);
 		if (ft_strchr(buf, '\n'))
-		{
-		// TRY NOT TO READ EVERYTHING AT ONCE
-			// file_str = ft_strjoin(file_str, buf);
-			// break;
-		}
+			break;
 		sz = read(fd, buf, BUFFER_SIZE);
 	}
+	free_data(buf);
 	return(file_str);
 }
 
@@ -152,15 +149,14 @@ char	*extract_next(char **str)
 char	*get_next_line(int fd)
 {
 	static char	*str;
-	char		*next_line;
 
-	// printf("\n---- Calling get_next_line ----\n");
 	if (!str || str[0] == '\0')
 	{
 		str = read_file(fd);
 	}
-	// next_line = extract_next(&str);
-	// printf("printing the next line : \n");
+	if (ft_strchr(str, '\n') == 0)
+		str = ft_strjoin(str, read_file(fd));
+	
 	return(extract_next(&str));
 }
 
@@ -169,6 +165,8 @@ int main(void)
 	int fd;
 
 	fd = open("4242", O_RDONLY | O_CREAT);
+	ft_putstr(get_next_line(fd));
+	ft_putstr(get_next_line(fd));
 	ft_putstr(get_next_line(fd));
 	ft_putstr(get_next_line(fd));
 	return 0;
